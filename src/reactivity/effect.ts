@@ -8,7 +8,8 @@ class ReactiveEffect {
   run() {
     // 保存一下当前的 activeEffect
     activeEffect = this
-    this._fn()
+    const res = this._fn()
+    return res
   }
 }
 
@@ -49,5 +50,9 @@ export function effect(fn) {
   const _effect = new ReactiveEffect(fn)
 
   _effect.run()
+
+  const runner = _effect.run.bind(_effect)
+
+  return runner
 }
 
