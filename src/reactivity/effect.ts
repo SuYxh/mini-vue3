@@ -1,6 +1,8 @@
 
 class ReactiveEffect {
   private _fn: any
+  deps = [];
+  active = true;
   public scheduler: Function | undefined;
   constructor(fn, scheduler?: Function) {
     this._fn = fn
@@ -13,6 +15,19 @@ class ReactiveEffect {
     const res = this._fn()
     return res
   }
+
+  stop() {
+    if (this.active) {
+      cleanupEffect(this);
+      this.active = false;
+    }
+  }
+}
+
+function cleanupEffect(effect) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect);
+  });
 }
 
 // targetMap 为什么要是全局的？
@@ -36,6 +51,8 @@ export function track(target, key) {
   }
 
   dep.add(activeEffect)
+
+  activeEffect.deps.push(dep);
 }
 
 export function trigger(target, key) {
@@ -61,8 +78,12 @@ export function effect(fn, options:effectOptions = {}) {
 
   _effect.run()
 
-  const runner = _effect.run.bind(_effect)
+  const runner: any = _effect.run.bind(_effect)
+  runner.effect = _effect;
 
   return runner
 }
 
+export function stop(runner) {
+  runner.effect.stop();
+}
