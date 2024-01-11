@@ -1,8 +1,10 @@
+import { extend } from "../shared";
 
 class ReactiveEffect {
   private _fn: any
   deps = [];
   active = true;
+  onStop?: () => void;
   public scheduler: Function | undefined;
   constructor(fn, scheduler?: Function) {
     this._fn = fn
@@ -19,6 +21,9 @@ class ReactiveEffect {
   stop() {
     if (this.active) {
       cleanupEffect(this);
+      if (this.onStop) {
+        this.onStop();
+      }
       this.active = false;
     }
   }
@@ -50,8 +55,11 @@ export function track(target, key) {
     depsMap.set(key, dep)
   }
 
-  dep.add(activeEffect)
+  // 如果没有这句话就会报错，为什么会有这句话呢？ activeEffect 什么时候不存在？
+  // 当只有用户写了 effect 函数的时候，才会有
+  if (!activeEffect) return;
 
+  dep.add(activeEffect)
   activeEffect.deps.push(dep);
 }
 
@@ -68,13 +76,10 @@ export function trigger(target, key) {
   }
 }
 
-type effectOptions = {
-  scheduler?: Function;
-};
-
 let activeEffect
-export function effect(fn, options:effectOptions = {}) {
+export function effect(fn, options:any = {}) {
   const _effect = new ReactiveEffect(fn, options.scheduler)
+  extend(_effect, options);
 
   _effect.run()
 

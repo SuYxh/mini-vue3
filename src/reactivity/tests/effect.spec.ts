@@ -2,7 +2,7 @@ import { effect, stop } from "../effect";
 import { reactive } from "../reactive"
 
 describe('effect', () => {
-  
+
   it('happy path', () => {
 
     const user = reactive({
@@ -17,7 +17,7 @@ describe('effect', () => {
 
     expect(nextAge).toBe(19)
 
-    user.age ++ 
+    user.age++
     expect(nextAge).toBe(20)
   })
 
@@ -39,7 +39,7 @@ describe('effect', () => {
 
     expect(nextAge).toBe(20)
 
-    user.age ++ 
+    user.age++
 
     expect(nextAge).toBe(21)
   })
@@ -65,7 +65,7 @@ describe('effect', () => {
 
     expect(nextAge).toBe(19)
 
-    user.age ++ 
+    user.age++
 
     user.name = 'jk'
 
@@ -129,5 +129,24 @@ describe('effect', () => {
     // stopped effect should still be manually callable
     runner();
     expect(dummy).toBe(3);
+  });
+
+  it("onStop", () => {
+    const obj = reactive({
+      foo: 1,
+    });
+    const onStop = jest.fn();
+    let dummy;
+    const runner = effect(
+      () => {
+        dummy = obj.foo;
+      },
+      {
+        onStop,
+      }
+    );
+
+    stop(runner);
+    expect(onStop).toBeCalledTimes(1);
   });
 })
