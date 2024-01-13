@@ -1,5 +1,7 @@
 import { extend } from "../shared";
 
+let activeEffect
+let shouldTrack
 class ReactiveEffect {
   private _fn: any
   deps = [];
@@ -12,10 +14,21 @@ class ReactiveEffect {
   }
 
   run() {
+    // 调用 stop 后 this.active 变为了 false， shouldTrack 为 false，在 track 方法就不会在收集到依赖
+    if (!this.active) {
+      return this._fn();
+    }
+
+    // 应该收集
+    shouldTrack = true;
     // 保存一下当前的 activeEffect
-    activeEffect = this
-    const res = this._fn()
-    return res
+    activeEffect = this;
+    const r = this._fn();
+
+    // 重置
+    shouldTrack = false;
+
+    return r;
   }
 
   stop() {
@@ -33,12 +46,22 @@ function cleanupEffect(effect) {
   effect.deps.forEach((dep: any) => {
     dep.delete(effect);
   });
+
+  effect.deps.length = 0
 }
 
 // targetMap 为什么要是全局的？
 // 如果 targetMap 不是全局的，只是在 track 方法中定义，那么在 trigger 中就无法获取到 targetMap
 const targetMap = new Map()
 export function track(target, key) {
+  // 如果没有这句话就会报错，为什么会有这句话呢？ activeEffect 什么时候不存在？
+  // 当只有用户写了 effect 函数的时候，才会有
+  // if (!activeEffect) return;
+  // if (!shouldTrack) return
+
+  // 将上面2 行代码进行优化
+  if (!isTracking()) return
+
   // 我们在运行时，可能会创建多个 target，每个 target 还会可能有多个 key，每个 key 又关联着多个 effectFn
   // 而且 target -> key -> effectFn，这三者是树形的关系
   // 因此就可以创建一个 Map 用于保存 target，取出来就是每个 key 对应这一个 depsMap，而每个 depsMap 又是一个 Set
@@ -55,12 +78,15 @@ export function track(target, key) {
     depsMap.set(key, dep)
   }
 
-  // 如果没有这句话就会报错，为什么会有这句话呢？ activeEffect 什么时候不存在？
-  // 当只有用户写了 effect 函数的时候，才会有
-  if (!activeEffect) return;
+  // 看看 dep 之前有没有添加过，添加过的话 那么就不添加了
+  if (dep.has(activeEffect)) return;
 
   dep.add(activeEffect)
   activeEffect.deps.push(dep);
+}
+
+function isTracking() {
+  return shouldTrack && activeEffect !== undefined;
 }
 
 export function trigger(target, key) {
@@ -76,7 +102,6 @@ export function trigger(target, key) {
   }
 }
 
-let activeEffect
 export function effect(fn, options:any = {}) {
   const _effect = new ReactiveEffect(fn, options.scheduler)
   extend(_effect, options);

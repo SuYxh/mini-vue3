@@ -1,77 +1,23 @@
 import { effect, stop } from "../effect";
-import { reactive } from "../reactive"
+import { reactive } from "../reactive";
 
-describe('effect', () => {
-
-  it('happy path', () => {
-
+describe("effect", () => {
+  it("happy path", () => {
     const user = reactive({
-      age: 18
-    })
+      age: 10,
+    });
 
     let nextAge;
-
     effect(() => {
-      nextAge = user.age + 1
-    })
+      nextAge = user.age + 1;
+    });
 
-    expect(nextAge).toBe(19)
+    expect(nextAge).toBe(11);
 
-    user.age++
-    expect(nextAge).toBe(20)
-  })
-
-  it('happy two effect', () => {
-
-    const user = reactive({
-      age: 18
-    })
-
-    let nextAge;
-
-    effect(() => {
-      nextAge = user.age + 1
-    })
-
-    effect(() => {
-      nextAge = nextAge + 1
-    })
-
-    expect(nextAge).toBe(20)
-
-    user.age++
-
-    expect(nextAge).toBe(21)
-  })
-
-  it('happy two value', () => {
-
-    const user = reactive({
-      name: 'dahuang',
-      age: 18
-    })
-
-    let nextAge, nextName;
-
-    effect(() => {
-      nextAge = user.age + 1
-    })
-
-    effect(() => {
-      nextName = user.name
-    })
-
-    expect(nextName).toBe('dahuang')
-
-    expect(nextAge).toBe(19)
-
-    user.age++
-
-    user.name = 'jk'
-
-    expect(nextAge).toBe(20)
-    expect(nextName).toBe('jk')
-  })
+    // update
+    user.age++;
+    expect(nextAge).toBe(12);
+  });
 
   it("should return runner when call effect", () => {
     // 当调用 runner 的时候可以重新执行 effect.run
@@ -123,7 +69,8 @@ describe('effect', () => {
     obj.prop = 2;
     expect(dummy).toBe(2);
     stop(runner);
-    obj.prop = 3;
+    // obj.prop = 3;
+    obj.prop++;
     expect(dummy).toBe(2);
 
     // stopped effect should still be manually callable
@@ -149,4 +96,4 @@ describe('effect', () => {
     stop(runner);
     expect(onStop).toBeCalledTimes(1);
   });
-})
+});

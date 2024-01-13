@@ -1,6 +1,7 @@
 import { track, trigger } from "./effect"
 import { ReactiveFlags } from "./reactive";
 
+// 
 const get = createGetter()
 const readonlyGet = createGetter(true)
 const set = createSetter()
@@ -12,7 +13,7 @@ function createGetter(isReadonly = false) {
     } else if (key === ReactiveFlags.IS_READONLY) {
       return isReadonly;
     }
-    
+
     const res = Reflect.get(target, key, receiver)
     // readonly 的对象不会被 track
     if (!isReadonly) {
@@ -34,6 +35,9 @@ function createSetter() {
 
 // mutable 可变的
 export const mutableHandlers = {
+  // 这里不需要每次都调用 createGetter 这个方法，所以缓存一下，初始化的时候调用一次就好
+  // get: createGetter(),
+  // set: createSetter(),
   get,
   set,
 }
