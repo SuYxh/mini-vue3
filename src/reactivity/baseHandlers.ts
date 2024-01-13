@@ -7,6 +7,7 @@ const set = createSetter()
 function createGetter(isReadonly = false) {
   return function get(target, key, receiver) {
     const res = Reflect.get(target, key, receiver)
+    // readonly 的对象不会被 track
     if (!isReadonly) {
       track(target, key)
     }
@@ -32,6 +33,7 @@ export const mutableHandlers = {
 
 export const readonlyHandlers = {
   get: readonlyGet,
+  // readonly 的属性值不可更改，set 中直接返回 true 即可
   set(target, key, value) {
     return true
   },
