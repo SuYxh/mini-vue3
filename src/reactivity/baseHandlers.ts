@@ -1,5 +1,6 @@
+import { isObject } from "../shared";
 import { track, trigger } from "./effect"
-import { ReactiveFlags } from "./reactive";
+import { reactive, ReactiveFlags, readonly } from "./reactive";
 
 // 
 const get = createGetter()
@@ -15,6 +16,11 @@ function createGetter(isReadonly = false) {
     }
 
     const res = Reflect.get(target, key, receiver)
+
+    if (isObject(res)) {
+      return isReadonly ? readonly(res) : reactive(res);
+    }
+
     // readonly 的对象不会被 track
     if (!isReadonly) {
       track(target, key)
