@@ -7,4 +7,12 @@ describe('readonly', () => {
     expect(wrapped).not.toBe(original);
     expect(wrapped.foo).toBe(1);
   })
+
+  it('should warn when update readonly prop value', () => {
+    // 这里使用 jest.fn
+    console.warn = jest.fn()
+    const readonlyObj = readonly({ foo: 1 })
+    readonlyObj.foo = 2
+    expect(console.warn).toHaveBeenCalled()
+  })
 })

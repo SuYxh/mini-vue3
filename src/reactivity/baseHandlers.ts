@@ -35,6 +35,11 @@ export const readonlyHandlers = {
   get: readonlyGet,
   // readonly 的属性值不可更改，set 中直接返回 true 即可
   set(target, key, value) {
+    // 在这里警告
+    console.warn(
+      `key: ${key} set value: ${value} fail, because the target is readonly`,
+      target
+    )
     return true
   },
 }
