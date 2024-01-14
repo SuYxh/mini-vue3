@@ -7,6 +7,7 @@ class RefImpl {
   // 这里我们也需要一个 dep Set 用于储存所有的依赖
   public dep;
   private _rawValue: any
+  public __v_isRef = true;
   constructor(value) {
     // 保存一下 value，在 set 中用于对比
     this._rawValue = value
@@ -49,4 +50,12 @@ function convert(value) {
 
 export function ref(value) {
   return new RefImpl(value)
+}
+
+export function isRef(ref) {
+  return !!ref.__v_isRef;
+}
+
+export function unRef(ref) {
+  return isRef(ref) ? ref.value : ref;
 }

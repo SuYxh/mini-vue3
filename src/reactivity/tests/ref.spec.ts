@@ -1,6 +1,6 @@
 import { effect } from "../effect";
 import { reactive, readonly, shallowReactive, shallowReadonly, toRaw } from "../reactive";
-import { ref } from "../ref";
+import { isRef, ref, unRef } from "../ref";
 describe("ref", () => {
   it("happy path", () => {
     const a = ref(1);
@@ -59,5 +59,16 @@ describe("ref", () => {
         foo: { bar: { baz: 1 }, foo2: { bar: { baz: 2 } } },
     }
     expect(toRaw(reactive(nestedWrapped))).toEqual(nestedWrapped)
-})
+  })
+
+  it('isRef', () => {
+    expect(isRef(1)).toBe(false)
+    expect(isRef(ref(1))).toBe(true)
+    expect(isRef(reactive({ foo: 1 }))).toBe(false)
+  })
+
+  it('unRef', () => {
+    expect(unRef(ref(1))).toBe(1)
+    expect(unRef(1)).toBe(1)
+  })
 });
