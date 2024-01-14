@@ -78,14 +78,18 @@ export function track(target, key) {
     depsMap.set(key, dep)
   }
 
-  // 看看 dep 之前有没有添加过，添加过的话 那么就不添加了
-  if (dep.has(activeEffect)) return;
-
-  dep.add(activeEffect)
-  activeEffect.deps.push(dep);
+  trackEffects(dep)
 }
 
-function isTracking() {
+// 抽离函数
+export function trackEffects(dep) {
+  // 看看 dep 之前有没有添加过，添加过的话 那么就不添加了
+  if (dep.has(activeEffect)) return
+
+  activeEffect.deps.push(dep)
+  dep.add(activeEffect)
+}
+export function isTracking() {
   return shouldTrack && activeEffect !== undefined;
 }
 
@@ -93,8 +97,12 @@ export function trigger(target, key) {
   // trigger 的逻辑就更加简单了，我们只需要取出depsMap中 key 对应的 dep， 这个 dep 是 一个 set 结构，再遍历 set 执行每个 effect 就可以了
   const depsMap = targetMap.get(target)
   const dep = depsMap.get(key)
-  for (const effect of dep) {
-    if (typeof effect.scheduler === 'function') {
+  triggerEffects(dep)
+}
+
+export function triggerEffects(deps) {
+  for (const effect of deps) {
+    if (effect.scheduler) {
       effect.scheduler()
     } else {
       effect.run()
