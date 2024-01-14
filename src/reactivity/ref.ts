@@ -1,12 +1,17 @@
-import { hasChanged } from "../shared";
+import { hasChanged, isObject } from "../shared";
 import { trackEffects, triggerEffects, isTracking } from "./effect"
+import { reactive } from "./reactive";
 
 class RefImpl {
   private _value: any
   // 这里我们也需要一个 dep Set 用于储存所有的依赖
-  public dep = new Set()
+  public dep;
+  private _rawValue: any
   constructor(value) {
-    this._value = value
+    // 如果 value 是一个对象，调用 reactive 进行转换
+    this._rawValue = value
+    this._value = isObject(value) ? reactive(value) : value
+    this.dep = new Set();
   }
   get value() {
     // 在 get 中进行依赖收集
@@ -19,9 +24,12 @@ class RefImpl {
   }
   set value(newValue) {
     // 判断下 newValue 和 this._value 是否相等
-    if (hasChanged(newValue, this._value)) {
+    // 如果 value 是一个 对象，那么 this._value 是经过 reactive 处理过的，会是一个 proxy 的对象，所以这里需要处理一下
+    // 在 constructor 中 我们直接将值保存在 this._rawValue， 对比的时候对比这个值就行
+    if (hasChanged(newValue, this._rawValue)) {
     // 一定先去修改了 value 
-      this._value = newValue
+      this._rawValue = newValue
+      this._value = isObject(newValue) ? reactive(newValue) : newValue
       // 在 set 中进行触发依赖
       triggerEffects(this.dep);
     }
