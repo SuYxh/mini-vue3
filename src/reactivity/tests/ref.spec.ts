@@ -1,4 +1,5 @@
 import { effect } from "../effect";
+import { reactive, readonly, shallowReactive, shallowReadonly, toRaw } from "../reactive";
 import { ref } from "../ref";
 describe("ref", () => {
   it("happy path", () => {
@@ -38,4 +39,25 @@ describe("ref", () => {
     a.value.count = 2;
     expect(dummy).toBe(2);
   });
+
+  it('toRaw', () => {
+    // toRaw 可以 return 通过 `reactive` 、 `readonly` 、`shallowReactive` 、`shallowReadonly` 包装的 origin 值
+    const reactiveOrigin = { key: 'reactive' }
+    expect(toRaw(reactive(reactiveOrigin))).toEqual(reactiveOrigin)
+    const readonlyOrigin = { key: 'readonly' }
+    expect(toRaw(readonly(readonlyOrigin))).toEqual(readonlyOrigin)
+    const shallowReadonlyOrigin = { key: 'shallowReadonly' }
+    expect(toRaw(shallowReadonly(shallowReadonlyOrigin))).toEqual(
+        shallowReadonlyOrigin
+    )
+    const shallowReactiveOrigin = { key: 'shallowReactive' }
+    expect(toRaw(shallowReactive(shallowReactiveOrigin))).toEqual(
+        shallowReactiveOrigin
+    )
+
+    const nestedWrapped = {
+        foo: { bar: { baz: 1 }, foo2: { bar: { baz: 2 } } },
+    }
+    expect(toRaw(reactive(nestedWrapped))).toEqual(nestedWrapped)
+})
 });

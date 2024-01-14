@@ -15,6 +15,9 @@ function createGetter(isReadonly = false, shallow = false) {
       return !isReadonly;
     } else if (key === ReactiveFlags.IS_READONLY) {
       return isReadonly;
+    } else if (key === ReactiveFlags.RAW) {
+      // 判断一下，如果访问的 key 是 ReactiveFlag.RAW，就直接返回就可以了
+      return target
     }
 
     const res = Reflect.get(target, key, receiver)
