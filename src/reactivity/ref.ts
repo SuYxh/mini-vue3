@@ -8,9 +8,10 @@ class RefImpl {
   public dep;
   private _rawValue: any
   constructor(value) {
-    // 如果 value 是一个对象，调用 reactive 进行转换
+    // 保存一下 value，在 set 中用于对比
     this._rawValue = value
-    this._value = isObject(value) ? reactive(value) : value
+    // 如果 value 是一个对象，调用 reactive 进行转换
+    this._value = convert(value);
     this.dep = new Set();
   }
   get value() {
@@ -29,7 +30,7 @@ class RefImpl {
     if (hasChanged(newValue, this._rawValue)) {
     // 一定先去修改了 value 
       this._rawValue = newValue
-      this._value = isObject(newValue) ? reactive(newValue) : newValue
+      this._value = convert(newValue);
       // 在 set 中进行触发依赖
       triggerEffects(this.dep);
     }
@@ -40,6 +41,10 @@ function trackRefValue(ref) {
   if (isTracking()) {
     trackEffects(ref.dep);
   }
+}
+
+function convert(value) {
+  return isObject(value) ? reactive(value) : value;
 }
 
 export function ref(value) {
