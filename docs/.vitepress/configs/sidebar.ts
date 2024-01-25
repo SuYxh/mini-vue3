@@ -42,6 +42,9 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
       collapsed: false,
       items: [
         { text: "概览", link: "/runtime/index" },
+        { text: "组件的初始化流程", link: "/runtime/1. 组件的初始化流程" },
+        { text: "配置 rollup", link: "/runtime/2. 配置 rollup" },
+        { text: "组件的代理对象", link: "/runtime/3. 组件的代理对象" },
       ],
     }
   ],
