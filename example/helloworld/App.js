@@ -1,4 +1,5 @@
 import { h } from "../../lib/x-mini-vue.esm.js";
+import { Foo } from './Foo.js';
 
 export const App = {
   // 必须要写 render
@@ -22,7 +23,11 @@ export const App = {
       // string
       // "hi, mini-vue"
       // Array
-      [h("p", { class:"red"}, "hi"), h("p", {class:"blue"}, "mini-vue"), h("a", {class:"blue"}, this.msg)]
+      // [h("p", { class:"red"}, "hi"), h("p", {class:"blue"}, "mini-vue"), h("a", {class:"blue"}, this.msg)]
+      [
+        // 挂载一个组件
+        h(Foo, { class: 'blue', counter: 0 }),
+      ]
     );
   },
 

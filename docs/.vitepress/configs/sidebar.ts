@@ -47,6 +47,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "组件的代理对象", link: "/runtime/3. 组件的代理对象" },
         { text: "实现 shapeFlags", link: "/runtime/4. 实现 shapeFlags" },
         { text: "实现注册事件功能", link: "/runtime/5. 实现注册事件功能" },
+        { text: "实现组件的 props 功能", link: "/runtime/6. 实现组件的 props 功能" },
       ],
     }
   ],
