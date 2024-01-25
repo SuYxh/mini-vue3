@@ -8,10 +8,17 @@ export default {
     {
       format: "cjs",
       file: pkg.main,
+      sourcemap: true
     },
     {
       format: "es",
       file: pkg.module,
+      sourcemap: true
+    },
+    {
+      format: "es",
+      file: pkg.module,
+      sourcemap: true
     },
   ],
 
