@@ -49,6 +49,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "实现注册事件功能", link: "/runtime/5. 实现注册事件功能" },
         { text: "实现组件的 props 功能", link: "/runtime/6. 实现组件的 props 功能" },
         { text: "实现组件的 emit 功能", link: "/runtime/7. 实现组件的 emit 功能" },
+        { text: "实现组件的 slot 功能", link: "/runtime/8. 实现组件的 slot 功能" },
       ],
     }
   ],
