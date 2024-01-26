@@ -3,11 +3,14 @@ import { h, renderSlots } from "../../lib/x-mini-vue.esm.js";
 export const Foo = {
   render() {
     console.log("Foo-this", this);
+    const age = 18
 
     const foo = h("p", {}, "foo");
     // return h("div", {}, [foo]);
     return h("div", {}, [
-      renderSlots(this.$slots, "header"),
+      renderSlots(this.$slots, "header", {
+        age,
+      }),
       foo,
       renderSlots(this.$slots, "footer"),
     ]);
