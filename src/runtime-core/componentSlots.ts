@@ -1,13 +1,16 @@
 import { ShapeFlags } from "../shared/ShapeFlags";
 
 export function initSlots(instance, children) {
-  // slots
+  normalizeObjectSlots(children, instance.slots)
+}
 
-  const slots = {}
+function normalizeObjectSlots(children: any, slots: any) {
   for (const key in children) {
     const value = children[key]
-    slots[key] = Array.isArray(value) ? value : [value];
+    slots[key] = normalizeSlotValue(value);
   }
+}
 
-  instance.slots = slots
+function normalizeSlotValue(value) {
+  return Array.isArray(value) ? value : [value];
 }
