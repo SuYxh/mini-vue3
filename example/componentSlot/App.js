@@ -1,4 +1,4 @@
-import { h } from "../../lib/x-mini-vue.esm.js";
+import { h, createTextVNode } from "../../lib/x-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 
 export const App = {
@@ -11,7 +11,8 @@ export const App = {
     // 具名插槽 + 作用域插槽的使用
     const foo = h(Foo, {}, {
       header: ({age}) => h('p', {}, 'header' + age),
-      footer: () => h('p', {}, 'footer'),
+      // footer: () => h('p', {}, 'footer'),
+      footer: () => createTextVNode("你好呀"),
     });
 
     return h("div", {}, [app, foo]);
