@@ -1,10 +1,10 @@
 import { h } from "../../lib/x-mini-vue.esm.js";
-import { Foo } from './Foo.js';
+import { Foo } from "./Foo.js";
 
 export const App = {
   // 必须要写 render
   render() {
-    console.log('this', this);
+    console.log("this", this);
     // console.log('this.$el', this.$el);
     // ui
     return h(
@@ -15,9 +15,9 @@ export const App = {
         onClick() {
           console.log("click");
         },
-        onMousedown(){
-          console.log("mousedown")
-        }
+        onMousedown() {
+          console.log("mousedown");
+        },
       },
       // "hi, " + this.msg
       // string
@@ -26,7 +26,16 @@ export const App = {
       // [h("p", { class:"red"}, "hi"), h("p", {class:"blue"}, "mini-vue"), h("a", {class:"blue"}, this.msg)]
       [
         // 挂载一个组件
-        h(Foo, { class: 'blue', counter: 0 }),
+        h(Foo, {
+          class: "blue",
+          counter: 0,
+          onAdd(a, b) {
+            console.log("onAdd", a, b);
+          },
+          onAddFoo() {
+            console.log("onAddFoo");
+          },
+        }),
       ]
     );
   },
