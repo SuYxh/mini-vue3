@@ -52,6 +52,9 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "实现组件的 slot 功能", link: "/runtime/8. 实现组件的 slot 功能" },
         { text: "实现 Fragment 和 Text 节点", link: "/runtime/9. 实现 Fragment 和 Text 节点" },
         { text: "实现 getCurrentInstance", link: "/runtime/10. 实现 getCurrentInstance" },
+        { text: "实现 provide 和 inject", link: "/runtime/11. 实现 provide 和 inject" },
+        { text: "12. 实现 customRenderer", link: "/runtime/12. 实现 customRenderer" },
+
       ],
     }
   ],
