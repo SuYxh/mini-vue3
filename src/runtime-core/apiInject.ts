@@ -6,11 +6,11 @@ export function provide(key, value) {
   if (currentInstance) {
     let { provides } = currentInstance;
 
-    // const parentProvides = currentInstance.parent.provides;
+    const parentProvides = currentInstance.parent.provides;
 
-    // if (provides === parentProvides) {
-    //   provides = currentInstance.provides = Object.create(parentProvides);
-    // }
+    if (provides === parentProvides) {
+      provides = currentInstance.provides = Object.create(parentProvides);
+    }
 
     provides[key] = value;
   }
@@ -22,15 +22,13 @@ export function inject(key, defaultValue) {
   if (currentInstance) {
     const parentProvides = currentInstance.parent.provides;
     
-    return parentProvides[key];
-
-    // if (key in parentProvides) {
-    //   return parentProvides[key];
-    // }else if(defaultValue){
-    //   if(typeof defaultValue === "function"){
-    //     return defaultValue()
-    //   }
-    //   return defaultValue
-    // }
+    if (key in parentProvides) {
+      return parentProvides[key];
+    }else if(defaultValue){
+      if(typeof defaultValue === "function"){
+        return defaultValue()
+      }
+      return defaultValue
+    }
   }
 }
