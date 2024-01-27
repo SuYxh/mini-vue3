@@ -53,7 +53,8 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "实现 Fragment 和 Text 节点", link: "/runtime/9. 实现 Fragment 和 Text 节点" },
         { text: "实现 getCurrentInstance", link: "/runtime/10. 实现 getCurrentInstance" },
         { text: "实现 provide 和 inject", link: "/runtime/11. 实现 provide 和 inject" },
-        { text: "12. 实现 customRenderer", link: "/runtime/12. 实现 customRenderer" },
+        { text: "实现 customRenderer", link: "/runtime/12. 实现 customRenderer" },
+        { text: "初始化 element 更新流程", link: "/runtime/13. 初始化 element 更新流程" },
 
       ],
     }
