@@ -3,6 +3,7 @@ import { createComponentInstance, setupComponent } from "./component";
 import { createAppAPI } from "./createApp";
 import { Fragment, Text } from "./vnode";
 import { effect } from '../reactivity/effect';
+import { EMPTY_OBJ } from "../shared";
 
 export function createRenderer(options) {
   const {
@@ -62,11 +63,41 @@ export function createRenderer(options) {
     console.log("n1", n1);
     console.log("n2", n2);
 
+    const oldProps = n1.props || EMPTY_OBJ;
+    const newProps = n2.props || EMPTY_OBJ;
+
+    // 这里需要传递 el，我们需要考虑一点，到这一层的时候
+    // n2.el 是 undefined，所以我们需要把 n1.el 赋给 n2.el
+    // 这是因为在下次 patch 的时候 n2 === n1, 此刻的新节点变成旧节点，el 就生效了
+    const el = (n2.el = n1.el);
+
+    patchProps(el, oldProps, newProps);
+  }
+
+  function patchProps(el, oldProps, newProps) {
+    if (oldProps !== newProps) {
+      // foo 之前的值和现在的值不一样了 --> 修改
+      for (const key in newProps) {
+        const prevProp = oldProps[key];
+        const nextProp = newProps[key];
+
+        if (prevProp !== nextProp) {
+          hostPatchProp(el, key, prevProp, nextProp);
+        }
+      }
+
+      if (oldProps !== EMPTY_OBJ) {
+        // 之前存在的属性在新的里面没有了 --> 删除
+        for (const key in oldProps) {
+          if (!(key in newProps)) {
+            hostPatchProp(el, key, oldProps[key], null);
+          }
+        }
+      }
+    }
   }
 
   function mountElement(vnode: any, container: any, parentComponent) {
-    //canvas
-    // new Element()
     const el = (vnode.el = hostCreateElement(vnode.type));
 
     const { children, shapeFlag } = vnode;
@@ -82,13 +113,9 @@ export function createRenderer(options) {
     const { props } = vnode;
     for (const key in props) {
       const val = props[key];
-      hostPatchProp(el, key, val);
+      hostPatchProp(el, key, null, val);
     }
-    // canvs
-    // el.x = 10
-
-    // container.append(el);
-    // addChild()
+   
     hostInsert(el, container);
   }
 

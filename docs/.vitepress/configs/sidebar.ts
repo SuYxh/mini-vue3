@@ -55,7 +55,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "实现 provide 和 inject", link: "/runtime/11. 实现 provide 和 inject" },
         { text: "实现 customRenderer", link: "/runtime/12. 实现 customRenderer" },
         { text: "初始化 element 更新流程", link: "/runtime/13. 初始化 element 更新流程" },
-
+        { text: "更新 props", link: "/runtime/14. 更新 props" },
       ],
     }
   ],
