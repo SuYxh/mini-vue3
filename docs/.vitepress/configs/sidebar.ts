@@ -70,7 +70,9 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
       text: "编译器",
       collapsed: false,
       items: [
-        { text: "概览", link: "/compiler/index" },
+        { text: "简介", link: "/compiler/index" },
+        { text: "编译模块概述", link: "/compiler/1-编译模块概述" },
+        { text: "实现解析插值表达式", link: "/compiler/2-实现解析插值表达式" },
       ],
     }
   ],
