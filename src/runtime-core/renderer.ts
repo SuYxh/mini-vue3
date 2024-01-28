@@ -151,6 +151,17 @@ export function createRenderer(options) {
       e2--;
     }
 
+    // 新的比老的多，需要进行创建
+    // 新节点比旧节点长，在尾部添加新节点 
+    if (i > e1) {
+      if (i <= e2) {
+        while (i <= e2) {
+          patch(null, c2[i], container, parentComponent);
+          i++;
+        }
+      }
+    }
+
     console.log('i', i, e1, e2);
   }
 
