@@ -73,6 +73,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "简介", link: "/compiler/index" },
         { text: "编译模块概述", link: "/compiler/1-编译模块概述" },
         { text: "实现解析插值表达式", link: "/compiler/2-实现解析插值表达式" },
+        { text: "实现解析elemen标签", link: "/compiler/3-实现解析elemen标签" },
       ],
     }
   ],
