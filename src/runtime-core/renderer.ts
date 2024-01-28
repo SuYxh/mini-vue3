@@ -173,6 +173,11 @@ export function createRenderer(options) {
           i++;
         }
       }
+    } else if (i > e2) {
+      while (i <= e1) {
+        hostRemove(c1[i].el);
+        i++;
+      }
     }
 
     console.log('i', i, e1, e2);
