@@ -58,6 +58,8 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "更新 props", link: "/runtime/14. 更新 props" },
         { text: "更新 children（一）", link: "/runtime/15. 更新 children（一）" },
         { text: "更新 children（二）", link: "/runtime/16. 更新 children（二）" },
+        { text: "更新 children（三）", link: "/runtime/17. 更新 children（三）" },
+        { text: "更新 children（四）", link: "/runtime/18. 更新 children（四）" },
       ],
     }
   ],
