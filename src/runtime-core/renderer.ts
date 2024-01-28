@@ -121,6 +121,7 @@ export function createRenderer(options) {
       return n1.type === n2.type && n1.key === n2.key;
     }
 
+    // 左侧 -- 新旧节点头部对比
     while (i <= e1 && i <= e2) {
       const n1 = c1[i];
       const n2 = c2[i];
@@ -135,7 +136,22 @@ export function createRenderer(options) {
       i ++
     }
 
-    console.log('i', i);
+    // 右侧 -- 新旧节点尾部对比
+    while (i <= e1 && i <= e2) {
+      const n1 = c1[e1];
+      const n2 = c2[e2];
+
+      if (isSomeVNodeType(n1, n2)) {
+        patch(n1, n2, container, parentComponent);
+      } else {
+        break;
+      }
+
+      e1--;
+      e2--;
+    }
+
+    console.log('i', i, e1, e2);
   }
 
   function unmountChildren(children) {
