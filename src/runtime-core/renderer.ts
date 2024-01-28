@@ -217,7 +217,7 @@ export function createRenderer(options) {
           newIndex = keyToNewIndexMap.get(prevChild.key);
         } else {
           //  如果老的子节点的 key 是空的，还需要再次遍历新节点，找到与当前老节点相同的 VNode，并将其索引赋给 
-          for (let j = s2; j < e2; j++) {
+          for (let j = s2; j <= e2; j++) {
             if (isSomeVNodeType(prevChild, c2[j])) {
               newIndex = j;
 
