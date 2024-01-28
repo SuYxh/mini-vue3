@@ -19,9 +19,11 @@ function patchProp(el, key, prevVal, nextVal) {
   }
 }
 
-
-function insert(el, parent) {
-  parent.append(el);
+// 将 parent.append 修改为 insertBefore，这样就可以传入一个锚点
+// 将会在这个锚点之前插入元素
+// 如果这个锚点是 null，那么将会和 append 的行为一样
+function insert(child, parent, anchor) {
+  parent.insertBefore(child, anchor || null);
 }
 
 function remove(child) {
