@@ -4,6 +4,7 @@ import { createAppAPI } from "./createApp";
 import { Fragment, Text } from "./vnode";
 import { effect } from '../reactivity/effect';
 import { EMPTY_OBJ } from "../shared";
+import { shouldUpdateComponent } from "./componentUpdateUtils";
 
 export function createRenderer(options) {
   const {
@@ -329,18 +330,37 @@ export function createRenderer(options) {
   }
 
   function processComponent(n1, n2: any, container: any, parentComponent, anchor) {
-    mountComponent(n2, container, parentComponent, anchor);
+    if (!n1) {
+      mountComponent(n2, container, parentComponent, anchor);
+    } else {
+      updateComponent(n1, n2);
+    }
+  }
+
+  function updateComponent(n1, n2) {
+    const instance = (n2.component = n1.component);
+    if (shouldUpdateComponent(n1, n2)) {
+      instance.next = n2;
+      instance.update();
+    } else {
+      n2.el = n1.el;
+      instance.vnode = n2;
+    }
   }
 
   function mountComponent(initialVNode: any, container, parentComponent, anchor) {
-    const instance = createComponentInstance(initialVNode, parentComponent);
+    // 顺便给 initialVNode.component 的进行赋值，然后更新时在 updateComponent 方法中会使用 组件实例上的 update 方法
+    const instance = (initialVNode.component = createComponentInstance(
+      initialVNode,
+      parentComponent
+    ));
 
     setupComponent(instance);
     setupRenderEffect(instance, initialVNode, container, anchor);
   }
 
   function setupRenderEffect(instance: any, initialVNode, container, anchor) {
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounted) {
         console.log("init");
         const { proxy } = instance;
@@ -352,6 +372,14 @@ export function createRenderer(options) {
         instance.isMounted = true;
       } else {
         console.log("update");
+        // 需要获取到更新之后的虚拟节点，然后更新 Props
+        const { next, vnode } = instance;
+        if (next) {
+          next.el = vnode.el;
+
+          updateComponentPreRender(instance, next);
+        }
+
         const { proxy } = instance;
         const subTree = instance.render.call(proxy);
         // 从实例上取出之前放置的虚拟节点 subTree，也就是在初始化时进行的赋值
@@ -368,6 +396,12 @@ export function createRenderer(options) {
   };
 }
 
+function updateComponentPreRender(instance, nextVNode) {
+  instance.vnode = nextVNode;
+  instance.next = null;
+
+  instance.props = nextVNode.props;
+}
 
 function getSequence(arr) {
   const p = arr.slice();

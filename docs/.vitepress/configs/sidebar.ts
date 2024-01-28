@@ -60,6 +60,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "更新 children（二）", link: "/runtime/16. 更新 children（二）" },
         { text: "更新 children（三）", link: "/runtime/17. 更新 children（三）" },
         { text: "更新 children（四）", link: "/runtime/18. 更新 children（四）" },
+        { text: "更新组件", link: "/runtime/19. 更新组件" },
       ],
     }
   ],
