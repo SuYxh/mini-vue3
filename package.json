@@ -6,28 +6,23 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c -w rollup.config.js",
-    "docs:dev": "cross-env NODE_ENV=development vitepress dev docs --port 5174",
-    "docs:build": "vitepress build docs",
-    "test": "jest"
+    "test": "vitest",
+    "docs:dev": "pnpm --filter vue-docs run docs:dev",
+    "docs:build": "pnpm --filter vue-docs run docs:build",
+    "clean": "rimraf 'packages/*/node_modules'"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "@babel/preset-typescript": "^7.15.0",
     "@rollup/plugin-typescript": "^8.2.5",
-    "@types/jest": "^27.0.1",
-    "babel-jest": "^27.1.0",
-    "jest": "^27.1.0",
+    "@types/node": "^18.13.0",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.5",
     "rollup": "^2.57.0",
     "tslib": "^2.3.1",
     "typescript": "^4.4.2",
-    "@mdit-vue/shared": "^0.12.0",
-    "@types/node": "^18.13.0",
-    "cross-env": "^7.0.3",
-    "sass": "^1.58.3",
-    "sitemap": "^7.1.1",
-    "vitepress": "1.0.0-alpha.60",
-    "vue": "^3.2.47"
+    "vitest": "^1.2.2"
   },
   "licenses": []
 }
