@@ -78,6 +78,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "三种类型联合解析", link: "/compiler/5-三种类型联合解析" },
         { text: "从有限状态机的角度看parse原理", link: "/compiler/6-从有限状态机的角度看parse原理" },
         { text: "transform模块", link: "/compiler/7-transform模块" },
+        { text: "实现代码生成string类型", link: "/compiler/8-实现代码生成string类型" },
       ],
     }
   ],
