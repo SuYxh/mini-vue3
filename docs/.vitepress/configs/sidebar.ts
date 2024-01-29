@@ -80,6 +80,8 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "transform模块", link: "/compiler/7-transform模块" },
         { text: "实现代码生成string类型", link: "/compiler/8-实现代码生成string类型" },
         { text: "实现代码生成插值类型", link: "/compiler/9-实现代码生成插值类型" },
+        { text: "codegen生成element", link: "/compiler/10-codegen生成element" },
+        { text: "codegen生成联合3种类型", link: "/compiler/11-codegen生成联合3种类型" },
       ],
     }
   ],
