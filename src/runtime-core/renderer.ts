@@ -366,7 +366,7 @@ export function createRenderer(options) {
         console.log("init");
         const { proxy } = instance;
         // 将虚拟节点放在实例上，在更新的时候会拿出来对比
-        const subTree = (instance.subTree = instance.render.call(proxy));
+        const subTree = (instance.subTree = instance.render.call(proxy, proxy));
         patch(null, subTree, container, instance, anchor);
         initialVNode.el = subTree.el;
         // 更新之后打一个标识
@@ -382,7 +382,7 @@ export function createRenderer(options) {
         }
 
         const { proxy } = instance;
-        const subTree = instance.render.call(proxy);
+        const subTree = instance.render.call(proxy, proxy);
         // 从实例上取出之前放置的虚拟节点 subTree，也就是在初始化时进行的赋值
         const prevSubTree = instance.subTree;
         // 更新组件实例上的 subTree

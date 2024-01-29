@@ -1,3 +1,5 @@
+export * from "./toDisplayString";
+
 export const extend = Object.assign;
 
 export const EMPTY_OBJ = {};
@@ -29,3 +31,4 @@ const capitalize = (str: string) => {
 export const toHandlerKey = (str: string) => {
   return str ? "on" + capitalize(str) : "";
 };
+
