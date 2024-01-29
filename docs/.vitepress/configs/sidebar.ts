@@ -75,6 +75,7 @@ export const sidebar: DefaultTheme.Config["sidebar"] = {
         { text: "实现解析插值表达式", link: "/compiler/2-实现解析插值表达式" },
         { text: "实现解析elemen标签", link: "/compiler/3-实现解析elemen标签" },
         { text: "实现解析text", link: "/compiler/4-实现解析text" },
+        { text: "三种类型联合解析", link: "/compiler/5-三种类型联合解析" },
       ],
     }
   ],
